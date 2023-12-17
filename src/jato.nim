@@ -14,7 +14,7 @@ if cmdArgs.len == 0:
 proc main(): void =
   let buildConfig = readBuildFile()
   echo buildConfig
-  initProject("java", "java")
+  initProject("applet", "applet")
 
 if isMainModule:
   main()
