@@ -1,5 +1,5 @@
 import std/os
-from build import readBuildFile
+from build import readBuildFile, handleBuild
 
 proc handleRun*(entry: var ref string): void =
     let
@@ -11,10 +11,9 @@ proc handleRun*(entry: var ref string): void =
     else:
         entry[] = buildConfig.default
 
-    for file in buildConfig.files:
-        discard execShellCmd("java -cp " & buildConfig.outDir & " " & buildConfig.srcDir / file)
+    handleBuild(buildConfig)
 
-    discard execShellCmd("cd " & buildConfig.srcDir & " && " & buildConfig.javac & " " & entry[])
+    discard execShellCmd("cd " & buildConfig.outDir & " && " & buildConfig.java & " " & entry[])
 
 
 export handleRun

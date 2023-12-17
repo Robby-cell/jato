@@ -3,7 +3,7 @@ from args import parseArgs, Command, Intentions
 import boilerplate
 from usage import printUsage
 from run import handleRun
-from build import handleBuild
+from build import handleBuild, readBuildFile
 
 proc main(): void =
   let
@@ -19,7 +19,9 @@ proc main(): void =
     entry[] = command.entry
     handleRun(entry)
   of Intentions.Build:
-    handleBuild()
+    let
+      buildConfig = readBuildFile()
+    handleBuild(buildConfig)
   of Intentions.New:
     initProject(command.entry, command.entry)
   of Intentions.Init:
@@ -27,4 +29,3 @@ proc main(): void =
 
 if isMainModule:
   main()
-  echo entryPointBoilerplate("App")

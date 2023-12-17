@@ -1,5 +1,6 @@
 import std/json
 import std/sequtils
+import std/os
 
 type
   BuildConfig* = object
@@ -30,7 +31,11 @@ proc readBuildFile*(): BuildConfig =
         config = parseJson(fileContents)
     result = BuildConfigFromJson(config)
 
-proc handleBuild*(): void {.sideEffect.} =
-  return
+proc handleBuild*(buildConfig: BuildConfig): void {.sideEffect.} =
+  for file in buildConfig.files:
+    discard execShellCmd("cd " & buildConfig.srcDir &
+      " && " & buildConfig.javac &
+      " " & file & ".java")
+    discard execShellCmd("mv " & buildConfig.srcDir / file & ".class" & " " & buildConfig.outDir / file & ".class")
 
 export BuildConfig, BuildConfigFromJson, readBuildFile, handleBuild
