@@ -1,0 +1,9 @@
+{
+    "java": "java",
+    "javac": "javac",
+    "files": [
+        "Main"
+    ],
+    "srcDir": "src",
+    "outDir": "bin"
+}
