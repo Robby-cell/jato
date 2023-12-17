@@ -5,14 +5,13 @@ from usage import printUsage
 from run import handleRun
 from build import handleBuild
 
-let
-  cmdArgs = commandLineParams()
-
-if cmdArgs.len == 0:
-  printUsage()
-  quit(1)
-
 proc main(): void =
+  let
+    cmdArgs = commandLineParams()
+  if cmdArgs.len == 0:
+    printUsage()
+    quit(1)
+    
   let command = parseArgs(cmdArgs)
   case command.intentions
   of Intentions.Run:
