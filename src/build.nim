@@ -40,4 +40,9 @@ proc handleBuild*(buildConfig: BuildConfig): void {.sideEffect.} =
       " " & file & ".java")
     discard execShellCmd("mv " & buildConfig.srcDir / file & ".class" & " " & buildConfig.outDir / file & ".class")
 
-export BuildConfig, BuildConfigFromJson, readBuildFile, handleBuild
+proc buildConfigToJson(buildConfig: BuildConfig): void =
+  let file = open("build.json", fmWrite)
+  defer: file.close()
+  file.write(%*buildConfig)
+
+export buildConfigToJson, BuildConfig, BuildConfigFromJson, readBuildFile, handleBuild

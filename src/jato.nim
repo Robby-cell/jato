@@ -4,6 +4,7 @@ import boilerplate
 from usage import printUsage
 from run import handleRun
 from build import handleBuild, readBuildFile
+from index import handleIndex
 
 proc main(): void =
   let
@@ -26,6 +27,8 @@ proc main(): void =
     initProject(command.entry, command.entry)
   of Intentions.Init:
     initProject(command.entry, ".")
+  of Intentions.Index:
+    handleIndex()
 
 if isMainModule:
   main()

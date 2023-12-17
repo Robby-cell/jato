@@ -6,6 +6,7 @@ type
         Build
         New
         Init
+        Index
 
 type
     Mode = enum
@@ -32,6 +33,9 @@ proc parseArgs(args: seq[string]): Command =
                 result.intentions = Intentions.New
             of "init", "i":
                 result.intentions = Intentions.Init
+            of "index", "x":
+                result.intentions = Intentions.Index
+                break
             of "-e", "--entry":
                 mode = Mode.ExpectName
             else:
