@@ -3,7 +3,6 @@ import std/os
 from boilerplate import defaultBuildJson
 import vector
 from std/strutils import replace, split, tokenize, join, startsWith, removePrefix
-import std/strformat
 
 proc handleIndex*(): void =
     var srcDir: string
