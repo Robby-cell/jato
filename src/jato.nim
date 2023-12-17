@@ -1,20 +1,28 @@
-import std/strformat
 import std/os
-from args import readBuildFile
+from args import parseArgs, Command, Intentions
 import boilerplate
+from usage import printUsage
+from run import handleRun
+from build import handleBuild
 
 let
   cmdArgs = commandLineParams()
-  exePath = getAppFilename()
 
 if cmdArgs.len == 0:
-  echo fmt"Usage: {exePath} <options> <?entry-file>"
+  printUsage()
   quit(1)
 
 proc main(): void =
-  let buildConfig = readBuildFile()
-  echo buildConfig
-  initProject("applet", "applet")
+  let command = parseArgs(cmdArgs)
+  case command.intentions
+  of Intentions.Run:
+    handleRun(command.entry)
+  of Intentions.Build:
+    handleBuild()
+  of Intentions.New:
+    initProject(command.entry, command.entry)
+  of Intentions.Init:
+    initProject(command.entry, ".")
 
 if isMainModule:
   main()

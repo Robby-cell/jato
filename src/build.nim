@@ -2,12 +2,12 @@ import std/json
 import std/sequtils
 
 type
-  BuildConfig = object
-    java: string
-    javac: string
-    files: seq[string]
-    srcDir: string
-    outDir: string
+  BuildConfig* = object
+    java*: string
+    javac*: string
+    files*: seq[string]
+    srcDir*: string
+    outDir*: string
 
 proc BuildConfigFromJson*(node: JsonNode): BuildConfig =
   result.java = node["java"].str
@@ -17,5 +17,18 @@ proc BuildConfigFromJson*(node: JsonNode): BuildConfig =
   result.outDir = node["outDir"].str
   result.srcDir = node["srcDir"].str
 
+proc readBuildFile*(): BuildConfig =
+    let
+        fileContents = (
+            let file = open("build.json", fmRead);
+            defer: file.close();
+            let contents = file.readAll();
+            contents
+        )
+        config = parseJson(fileContents)
+    result = BuildConfigFromJson(config)
 
-export BuildConfig, BuildConfigFromJson
+proc handleBuild*(): void {.sideEffect.} =
+  return
+
+export BuildConfig, BuildConfigFromJson, readBuildFile, handleBuild
