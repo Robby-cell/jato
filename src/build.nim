@@ -32,6 +32,8 @@ proc readBuildFile*(): BuildConfig =
     result = BuildConfigFromJson(config)
 
 proc handleBuild*(buildConfig: BuildConfig): void {.sideEffect.} =
+  if not dirExists(buildConfig.outDir):
+    createDir(buildConfig.outDir)
   for file in buildConfig.files:
     discard execShellCmd("cd " & buildConfig.srcDir &
       " && " & buildConfig.javac &
