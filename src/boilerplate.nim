@@ -25,7 +25,7 @@ proc defaultBuildJson(files: seq[string]): string =
     "java": "java",
     "javac": "javac",
     "files": {filesJson},
-    "default": {files[0]},
+    "default": "{files[0]}",
     "srcDir": "src",
     "outDir": "bin"
 }}
@@ -45,8 +45,11 @@ proc initProject(name, dir: string): void {.sideEffect.} =
 
     let
         srcDir = projectDir / "src"
+        binDir = projectDir / "bin"
     if not dirExists(srcDir):
         createDir(srcDir)
+    if not dirExists(binDir):
+        createDir(binDir)
     block:
         let entryFile = open(srcDir / name & ".java", fmWrite)
         defer: entryFile.close()
