@@ -25,6 +25,7 @@ proc defaultBuildJson(files: seq[string]): string =
     "java": "java",
     "javac": "javac",
     "files": {filesJson},
+    "default": {files[0]},
     "srcDir": "src",
     "outDir": "bin"
 }}

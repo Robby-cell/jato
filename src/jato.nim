@@ -11,11 +11,13 @@ proc main(): void =
   if cmdArgs.len == 0:
     printUsage()
     quit(1)
-    
+
   let command = parseArgs(cmdArgs)
   case command.intentions
   of Intentions.Run:
-    handleRun(command.entry)
+    var entry: ref string = string.new()
+    entry[] = command.entry
+    handleRun(entry)
   of Intentions.Build:
     handleBuild()
   of Intentions.New:

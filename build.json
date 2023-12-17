@@ -2,8 +2,10 @@
     "java": "java",
     "javac": "javac",
     "files": [
-        "Main"
+        "Main",
+        "foo"
     ],
+    "default": "Main",
     "srcDir": "src",
     "outDir": "bin"
 }
