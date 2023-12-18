@@ -2,6 +2,17 @@ import std/json
 import std/sequtils
 import std/os
 
+const
+  MOVE =
+    when defined windows:
+      "move"
+    elif defined linux:
+      "mv"
+    elif defined mac:
+      "mv"
+    else:
+      compileError("Unsupported platform")
+
 type
   BuildConfig* = object
     java*: string
@@ -38,7 +49,7 @@ proc handleBuild*(buildConfig: BuildConfig): void {.sideEffect.} =
     discard execShellCmd("cd " & buildConfig.srcDir &
       " && " & buildConfig.javac &
       " " & file & ".java")
-    discard execShellCmd("mv " & buildConfig.srcDir / file & ".class" & " " & buildConfig.outDir / file & ".class")
+    discard execShellCmd(MOVE & " " & buildConfig.srcDir / file & ".class" & " " & buildConfig.outDir / file & ".class")
 
 proc buildConfigToJson(buildConfig: BuildConfig): void =
   let file = open("build.json", fmWrite)
