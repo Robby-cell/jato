@@ -22,21 +22,6 @@ proc handleIndex*(): void =
         srcDir = buildConfig.srcDir
 
     var files = initVector[string]();
-    # for kind, path in walkDir(srcDir):
-    #     if kind == pcFile:
-    #         var
-    #             pathTo = path.splitFile().dir.replace("src")
-    #             name = path.splitFile().name.split('.')[0]
-    #             nameOfFile = (
-    #                 var output = pathTo & "/"
-    #                 output.removePrefix('/')
-    #                 output = output & name
-    #                 output
-    #             )
-    #         # var iter = nameOfFile.tokenize({'/'})
-
-    #         echo nameOfFile
-    #         pushBack(files, nameOfFile)
     for file in findAllInDirSantized(srcDir, "java"):
         echo file
         pushBack(files, file)
