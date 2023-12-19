@@ -1,6 +1,7 @@
 import std/json
 import std/sequtils
 import std/os
+from dir import ensureDirExists
 
 const
   MOVE =
@@ -32,15 +33,15 @@ proc BuildConfigFromJson*(node: JsonNode): BuildConfig =
   result.srcDir = node["srcDir"].str
 
 proc readBuildFile*(): BuildConfig =
-    let
-        fileContents = (
-            let file = open("build.json", fmRead);
-            defer: file.close();
-            let contents = file.readAll();
-            contents
-        )
-        config = parseJson(fileContents)
-    result = BuildConfigFromJson(config)
+  let
+    fileContents = (
+        let file = open("build.json", fmRead);
+        defer: file.close();
+        let contents = file.readAll();
+        contents
+    )
+    config = parseJson(fileContents)
+  result = BuildConfigFromJson(config)
 
 proc handleBuild*(buildConfig: BuildConfig): void {.sideEffect.} =
   if not dirExists(buildConfig.outDir):
@@ -49,7 +50,9 @@ proc handleBuild*(buildConfig: BuildConfig): void {.sideEffect.} =
     discard execShellCmd("cd " & buildConfig.srcDir &
       " && " & buildConfig.javac &
       " " & file & ".java")
-    discard execShellCmd(MOVE & " " & buildConfig.srcDir / file & ".class" & " " & buildConfig.outDir / file & ".class")
+    ensureDirExists(buildConfig.outDir, file.splitFile().dir);
+    discard execShellCmd(MOVE & " " & buildConfig.srcDir / file & ".class" &
+        " " & buildConfig.outDir / file & ".class")
 
 proc buildConfigToJson(buildConfig: BuildConfig): void =
   let file = open("build.json", fmWrite)
